@@ -33,6 +33,6 @@ class AdminUserAccountControllerTest {
         mvc.perform(get("/admin/members"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andExpect(view().name("/admin/members"));
+                .andExpect(view().name("admin/members"));
     }
 }
