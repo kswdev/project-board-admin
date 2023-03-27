@@ -12,7 +12,7 @@ public class UserAccountManagementController {
 
     @GetMapping
     public String userAccounts() {
-        return "management/userAccounts";
+        return "management/user-accounts";
     }
 
 }
