@@ -1,7 +1,6 @@
 package com.boardadmin.project.controller;
 
 import com.boardadmin.project.config.SecurityConfig;
-import com.boardadmin.project.domain.constant.RoleType;
 import com.boardadmin.project.dto.ArticleDto;
 import com.boardadmin.project.dto.UserAccountDto;
 import com.boardadmin.project.service.ArticleManagementService;
@@ -12,12 +11,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 import static org.mockito.BDDMockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
