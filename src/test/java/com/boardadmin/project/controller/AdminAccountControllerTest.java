@@ -1,7 +1,6 @@
 package com.boardadmin.project.controller;
 
 import com.boardadmin.project.config.SecurityConfig;
-import com.boardadmin.project.config.TestSecurityConfig;
 import com.boardadmin.project.domain.constant.RoleType;
 import com.boardadmin.project.dto.AdminAccountDto;
 import com.boardadmin.project.service.AdminAccountService;
