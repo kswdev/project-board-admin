@@ -1,6 +1,5 @@
 package com.boardadmin.project.controller;
 
-import com.boardadmin.project.config.SecurityConfig;
 import com.boardadmin.project.config.TestSecurityConfig;
 import com.boardadmin.project.dto.ArticleDto;
 import com.boardadmin.project.dto.UserAccountDto;

@@ -22,7 +22,7 @@ public record KakaoOAuth2Response(
             String email
     ) {
         public record Profile(String nickname) {
-            public static Profile from(Map<String, Object> attributes)  {
+            public static Profile from(Map<String, Object> attributes) {
                 return new Profile(String.valueOf(attributes.get("nickname")));
             }
         }
