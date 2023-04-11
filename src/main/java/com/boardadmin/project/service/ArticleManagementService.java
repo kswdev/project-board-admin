@@ -4,6 +4,7 @@ import com.boardadmin.project.dto.ArticleDto;
 import com.boardadmin.project.dto.properties.ProjectProperties;
 import com.boardadmin.project.dto.response.ArticleClientResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class ArticleManagementService {
@@ -26,7 +28,7 @@ public class ArticleManagementService {
                 .toUri();
 
         ArticleClientResponse response = restTemplate.getForObject(uri, ArticleClientResponse.class);
-
+        log.info("article : {}", response);
         return Optional.ofNullable(response)
                 .orElseGet(ArticleClientResponse::empty).articles();
     }

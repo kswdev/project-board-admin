@@ -64,7 +64,7 @@ class ArticleManagementControllerTest {
                 .andExpect(jsonPath("$.id").value(articleId))
                 .andExpect(jsonPath("$.title").value(articleDto.title()))
                 .andExpect(jsonPath("$.content").value(articleDto.content()))
-                .andExpect(jsonPath("$.userAccount.nickname").value(articleDto.userAccountDto().nickname()));
+                .andExpect(jsonPath("$.userAccount.nickname").value(articleDto.userAccount().nickname()));
         then(articleManagementService).should().getArticle(articleId);
     }
 

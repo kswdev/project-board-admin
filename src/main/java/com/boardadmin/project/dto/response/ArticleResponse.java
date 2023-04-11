@@ -20,11 +20,11 @@ public record ArticleResponse(
     }
 
     public static ArticleResponse withContent(ArticleDto dto) {
-        return ArticleResponse.of(dto.id(), dto.userAccountDto(), dto.title(), dto.content(), dto.createdAt());
+        return ArticleResponse.of(dto.id(), dto.userAccount(), dto.title(), dto.content(), dto.createdAt());
     }
 
     public static ArticleResponse withoutContent(ArticleDto dto) {
-        return ArticleResponse.of(dto.id(), dto.userAccountDto(), dto.title(), null, dto.createdAt());
+        return ArticleResponse.of(dto.id(), dto.userAccount(), dto.title(), null, dto.createdAt());
     }
 
 }
