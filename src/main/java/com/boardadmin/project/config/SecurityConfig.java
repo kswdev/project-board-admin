@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -43,6 +44,8 @@ public class SecurityConfig {
                 .formLogin(withDefaults())
                 .logout(logout -> logout.logoutSuccessUrl("/"))
                 .oauth2Login(withDefaults())
+                .sessionManagement(httpSecuritySessionManagementConfigurer ->
+                        httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .build();
     }
 
@@ -67,7 +70,6 @@ public class SecurityConfig {
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService(
             AdminAccountService adminAccountService,
             PasswordEncoder passwordEncoder
-
     ) {
         final DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
 

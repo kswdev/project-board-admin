@@ -28,7 +28,6 @@ public class ArticleManagementService {
                 .toUri();
 
         ArticleClientResponse response = restTemplate.getForObject(uri, ArticleClientResponse.class);
-        log.info("article : {}", response);
         return Optional.ofNullable(response)
                 .orElseGet(ArticleClientResponse::empty).articles();
     }

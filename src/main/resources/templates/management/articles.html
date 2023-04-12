@@ -29,19 +29,25 @@
                 <td>1</td>
                 <td><a data-toggle="modal" data-target="#layout-modal">새 글</a></td>
                 <td>Uno</td>
-                <td><time datetime="2022-01-01T00:00:00">2022-01-01 00:00:00</time></td>
+                <td>
+                    <time datetime="2022-01-01T00:00:00">2022-01-01 00:00:00</time>
+                </td>
             </tr>
             <tr>
                 <td>2</td>
                 <td><a data-toggle="modal" data-target="#layout-modal">아무글</a></td>
                 <td>Uno</td>
-                <td><time datetime="2022-01-02T00:00:00">2022-01-02 00:00:00</time></td>
+                <td>
+                    <time datetime="2022-01-02T00:00:00">2022-01-02 00:00:00</time>
+                </td>
             </tr>
             <tr>
                 <td>3</td>
                 <td><a data-toggle="modal" data-target="#layout-modal">스프링 부트 블로그 정리</a></td>
                 <td>Uno</td>
-                <td><time datetime="2022-01-03T00:00:00">2022-01-03 00:00:00</time></td>
+                <td>
+                    <time datetime="2022-01-03T00:00:00">2022-01-03 00:00:00</time>
+                </td>
             </tr>
             </tbody>
             <tfoot>
@@ -55,6 +61,9 @@
         </table>
     </main>
     <!-- /.content -->
+
+    <div class="modal fade" id="layout-modal"></div>
+    <!-- /.modal -->
 
     <aside id="layout-right-aside">오른쪽 사이드 바 삽입부</aside>
     <footer id="layout-footer">푸터 삽입부</footer>
@@ -78,7 +87,6 @@
 <script src="/js/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <script>
     $(function () {
-        console.log("${article}");
         $("#main-table").DataTable({
             "responsive": true, "lengthChange": false, "autoWidth": false,
             "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
