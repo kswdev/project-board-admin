@@ -4,7 +4,6 @@ import com.boardadmin.project.dto.ArticleCommentDto;
 import com.boardadmin.project.dto.UserAccountDto;
 import com.boardadmin.project.dto.properties.ProjectProperties;
 import com.boardadmin.project.dto.response.ArticleCommentClientResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -27,13 +26,15 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
+@DisplayName("비즈니스 로직 - 댓글 관리")
 class ArticleCommentManagementServiceTest {
 
-    @Disabled("실제 API 호출 결과 관찰용")
+    @Disabled("실제 API 호출 결과 관찰용이므로 평상시엔 비활성화")
     @DisplayName("실제 API 호출 테스트")
     @SpringBootTest
     @Nested
     class RealApiTest {
+
         private final ArticleCommentManagementService sut;
 
         @Autowired
@@ -41,9 +42,9 @@ class ArticleCommentManagementServiceTest {
             this.sut = sut;
         }
 
-        @DisplayName("게시글 API를 호출하면, 게시글을 가져온다.")
+        @DisplayName("댓글 API를 호출하면, 댓글을 가져온다.")
         @Test
-        void given_when_then() {
+        void givenNothing_whenCallingCommentApi_thenReturnsCommentList() {
             // Given
 
             // When
@@ -55,7 +56,6 @@ class ArticleCommentManagementServiceTest {
         }
     }
 
-
     @DisplayName("API mocking 테스트")
     @EnableConfigurationProperties(ProjectProperties.class)
     @AutoConfigureWebClient(registerRestTemplate = true)
@@ -66,100 +66,112 @@ class ArticleCommentManagementServiceTest {
         private final ArticleCommentManagementService sut;
         private final ProjectProperties projectProperties;
         private final MockRestServiceServer server;
-        private final ObjectMapper objectMapper;
+        private final ObjectMapper mapper;
 
         @Autowired
         public RestTemplateTest(
                 ArticleCommentManagementService sut,
                 ProjectProperties projectProperties,
                 MockRestServiceServer server,
-                ObjectMapper objectMapper
+                ObjectMapper mapper
+
         ) {
             this.sut = sut;
             this.projectProperties = projectProperties;
             this.server = server;
-            this.objectMapper = objectMapper;
+            this.mapper = mapper;
         }
 
-        @DisplayName("게시글 목록 API를 호출하면, 게시글을 가져온다.")
-        void givenNothing_whenCallingArticlesApi_thenReturnsArticleList() throws JsonProcessingException {
-            // Given
-            ArticleCommentDto expectedArticle = createArticleCommentDto("글");
-            ArticleCommentClientResponse expectedResponse = ArticleCommentClientResponse.of(List.of(expectedArticle));
-            server
-                    .expect(requestTo(projectProperties.board().url() + "/api/articles?size=10000"))
-                    .andRespond(withSuccess(
-                            objectMapper.writeValueAsString(expectedResponse),
-                            MediaType.APPLICATION_JSON
-                    ));
-            // When
-            List<ArticleCommentDto> result = sut.getArticleComments();
-            // Then
-            assertThat(result).first()
-                    .hasFieldOrPropertyWithValue("id", expectedArticle.id())
-                    .hasFieldOrPropertyWithValue("content", expectedArticle.content())
-                    .hasFieldOrPropertyWithValue("userAccount.nickname", expectedArticle.userAccountDto().nickname());
-            server.verify();
-        }
-
-        @DisplayName("게시글 목록 API를 호출하면, 게시글을 가져온다.")
-        void givenArticldId_whenCallingArticlesApi_thenReturnsArticle() throws JsonProcessingException {
-            // Given
-            Long articleId = 1L;
-            ArticleCommentDto expectedArticle = createArticleCommentDto("글");
-            server
-                    .expect(requestTo(projectProperties.board().url() + "/api/articles/" + articleId))
-                    .andRespond(withSuccess(
-                            objectMapper.writeValueAsString(expectedArticle),
-                            MediaType.APPLICATION_JSON
-                    ));
-            // When
-            List<ArticleCommentDto> result = sut.getArticleComments();
-            // Then
-            assertThat(result).first()
-                    .hasFieldOrPropertyWithValue("id", expectedArticle.id())
-                    .hasFieldOrPropertyWithValue("content", expectedArticle.content())
-                    .hasFieldOrPropertyWithValue("userAccount.nickname", expectedArticle.userAccountDto().nickname());
-            server.verify();
-        }
-
-        @DisplayName("게시글 ID와 함께 게시글 삭제 API를 호출하면, 게시글을 삭제한다.")
+        @DisplayName("댓글 목록 API을 호출하면, 댓글들을 가져온다.")
         @Test
-        void givenArticleId_whenCallingDeleteArticleApi_thenDeleteAnArticle() {
+        void givenNothing_whenCallingCommentsApi_thenReturnsCommentList() throws Exception {
             // Given
-            Long articleId = 1L;
+            ArticleCommentDto expectedComment = createArticleCommentDto("댓글");
+            ArticleCommentClientResponse expectedResponse = ArticleCommentClientResponse.of(List.of(expectedComment));
             server
-                    .expect(requestTo(projectProperties.board().url() + "api/articles/" + articleId))
+                    .expect(requestTo(projectProperties.board().url() + "/api/articleComments?size=10000"))
+                    .andRespond(withSuccess(
+                            mapper.writeValueAsString(expectedResponse),
+                            MediaType.APPLICATION_JSON
+                    ));
+
+
+            // When
+            List<ArticleCommentDto> result = sut.getArticleComments();
+
+            // Then
+            assertThat(result).first()
+                    .hasFieldOrPropertyWithValue("id", expectedComment.id())
+                    .hasFieldOrPropertyWithValue("content", expectedComment.content())
+                    .hasFieldOrPropertyWithValue("userAccountDto.nickname", expectedComment.userAccount().nickname());
+            server.verify();
+        }
+
+        @DisplayName("댓글 ID와 함께 댓글 API을 호출하면, 댓글을 가져온다.")
+        @Test
+        void givenCommentId_whenCallingCommentApi_thenReturnsComment() throws Exception {
+            // Given
+            Long articleCommentId = 1L;
+            ArticleCommentDto expectedComment = createArticleCommentDto("댓글");
+            server
+                    .expect(requestTo(projectProperties.board().url() + "/api/articleComments/" + articleCommentId + "?projection=articleCommentProjection"))
+                    .andRespond(withSuccess(
+                            mapper.writeValueAsString(expectedComment),
+                            MediaType.APPLICATION_JSON
+                    ));
+
+
+            // When
+            ArticleCommentDto result = sut.getArticleComment(articleCommentId);
+
+            // Then
+            assertThat(result)
+                    .hasFieldOrPropertyWithValue("id", expectedComment.id())
+                    .hasFieldOrPropertyWithValue("content", expectedComment.content())
+                    .hasFieldOrPropertyWithValue("userAccountDto.nickname", expectedComment.userAccount().nickname());
+            server.verify();
+        }
+
+        @DisplayName("댓글 ID와 함께 댓글 삭제 API을 호출하면, 댓글을 삭제한다.")
+        @Test
+        void givenCommentId_whenCallingDeleteCommentApi_thenDeletesComment() throws Exception {
+            // Given
+            Long articleCommentId = 1L;
+            server
+                    .expect(requestTo(projectProperties.board().url() + "/api/articleComments/" + articleCommentId))
                     .andExpect(method(HttpMethod.DELETE))
                     .andRespond(withSuccess());
+
             // When
-            sut.deleteArticleComment(articleId);
+            sut.deleteArticleComment(articleCommentId);
 
             // Then
             server.verify();
         }
-
-        private ArticleCommentDto createArticleCommentDto(String content) {
-            return ArticleCommentDto.of(
-                    1L,
-                    1L,
-                    createUserAccountDto(),
-                    null,
-                    content,
-                    LocalDateTime.now(),
-                    "Uno",
-                    LocalDateTime.now(),
-                    "Uno"
-            );
-        }
-
-        private UserAccountDto createUserAccountDto() {
-            return UserAccountDto.of(
-                    "unoTest",
-                    "uno-test@email.com",
-                    "uno-test",
-                    "test memo"
-            );
-        }
     }
+
+
+    private ArticleCommentDto createArticleCommentDto(String content) {
+        return ArticleCommentDto.of(
+                1L,
+                1L,
+                createUserAccountDto(),
+                null,
+                content,
+                LocalDateTime.now(),
+                "Uno",
+                LocalDateTime.now(),
+                "Uno"
+        );
+    }
+
+    private UserAccountDto createUserAccountDto() {
+        return UserAccountDto.of(
+                "unoTest",
+                "uno-test@email.com",
+                "uno-test",
+                "test memo"
+        );
+    }
+
 }

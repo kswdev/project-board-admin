@@ -19,7 +19,7 @@ public record ArticleCommentResponse(
     }
 
     public static ArticleCommentResponse of(ArticleCommentDto dto) {
-        return ArticleCommentResponse.of(dto.id(), dto.userAccountDto(), dto.content(), dto.createdAt());
+        return ArticleCommentResponse.of(dto.id(), dto.userAccount(), dto.content(), dto.createdAt());
     }
 
 }

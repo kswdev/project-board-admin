@@ -1,6 +1,5 @@
 package com.boardadmin.project.controller;
 
-import com.boardadmin.project.config.SecurityConfig;
 import com.boardadmin.project.config.TestSecurityConfig;
 import com.boardadmin.project.dto.ArticleCommentDto;
 import com.boardadmin.project.dto.UserAccountDto;
@@ -66,7 +65,7 @@ class ArticleCommentManagementControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(articleCommentId))
                 .andExpect(jsonPath("$.content").value(articleCommentDto.content()))
-                .andExpect(jsonPath("$.userAccount.nickname").value(articleCommentDto.userAccountDto().nickname()));
+                .andExpect(jsonPath("$.userAccountDto.nickname").value(articleCommentDto.userAccount().nickname()));
         then(articleCommentManagementService).should().getArticleComment(articleCommentId);
     }
 

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public record ArticleCommentDto(
         Long id,
         Long articleId,
-        UserAccountDto userAccountDto,
+        UserAccountDto userAccount,
         Long parentCommentId,
         String content,
         LocalDateTime createdAt,

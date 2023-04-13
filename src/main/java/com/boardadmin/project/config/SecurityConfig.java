@@ -37,15 +37,15 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .mvcMatchers(HttpMethod.POST, "/**").hasAnyRole(rolesAboveManager)
-                        .mvcMatchers(HttpMethod.DELETE, "/**").hasAnyRole(rolesAboveManager)
+//                        .mvcMatchers(HttpMethod.POST, "/**").hasAnyRole(rolesAboveManager)
+//                        .mvcMatchers(HttpMethod.DELETE, "/**").hasAnyRole(rolesAboveManager)
                         .anyRequest().permitAll()
                 )
                 .formLogin(withDefaults())
                 .logout(logout -> logout.logoutSuccessUrl("/"))
                 .oauth2Login(withDefaults())
-                .sessionManagement(httpSecuritySessionManagementConfigurer ->
-                        httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+/*                .sessionManagement(httpSecuritySessionManagementConfigurer ->
+                        httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))*/
                 .build();
     }
 
