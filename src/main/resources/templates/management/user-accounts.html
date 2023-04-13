@@ -19,6 +19,7 @@
             <thead>
             <tr>
                 <th>ID</th>
+                <th>닉네임</th>
                 <th>댓글 내용</th>
                 <th>작성자</th>
                 <th>작성일시</th>
@@ -26,28 +27,36 @@
             </thead>
             <tbody>
             <tr>
-                <td>1</td>
-                <td><a data-toggle="modal" data-target="#layout-modal">테스트 댓글입니다.</a></td>
+                <td><a data-toggle="modal" data-target="#layout-modal">uno</a></td>
                 <td>Uno</td>
+                <td>uno@email.com</td>
+                <td>this is memo</td>
+                <td>uno</td>
                 <td><time datetime="2022-01-01T00:00:00">2022-01-01 00:00:00</time></td>
             </tr>
             <tr>
-                <td>2</td>
                 <td><a data-toggle="modal" data-target="#layout-modal">퍼가요~~</a></td>
                 <td>Uno</td>
+                <td>uno2@email.com</td>
+                <td>this is memo</td>
+                <td>uno</td>
                 <td><time datetime="2022-01-02T00:00:00">2022-01-02 00:00:00</time></td>
             </tr>
             <tr>
-                <td>3</td>
-                <td><a data-toggle="modal" data-target="#layout-modal">악성 댓글 XXX</a></td>
+                <td><a data-toggle="modal" data-target="#layout-modal">uno</a></td>
                 <td>Uno</td>
+                <td>uno3@email.com</td>
+                <td>this is memo3</td>
+                <td>uno</td>
                 <td><time datetime="2022-01-03T00:00:00">2022-01-03 00:00:00</time></td>
             </tr>
             </tbody>
             <tfoot>
             <tr>
                 <th>ID</th>
-                <th>댓글 내용</th>
+                <th>닉네임</th>
+                <th>이메일</th>
+                <th>메모</th>
                 <th>작성자</th>
                 <th>작성일시</th>
             </tr>
@@ -56,6 +65,7 @@
     </main>
     <!-- /.content -->
 
+    <div class="modal fade" id="layout-modal"></div>
 
     <aside id="layout-right-aside">오른쪽 사이드 바 삽입부</aside>
     <footer id="layout-footer">푸터 삽입부</footer>
@@ -84,6 +94,30 @@
             "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
             "pageLength": 10
         }).buttons().container().appendTo('#main-table_wrapper .col-md-6:eq(0)'); // main-table_wrapper ID는 플러그인에 의해 자동 생성됨
+    });
+</script>
+<script>
+    $(document).ready(() => {
+        $('#layout-modal').on('show.bs.modal', (event) => {
+            console.log($(event.relatedTarget))
+            const userId = $(event.relatedTarget).data('id');
+
+            fetch(`/management/user-accounts/${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const bodyText =
+                        "- 닉네임: " + data.nickname + "\n" +
+                        "- 이메일: " + data.email + "\n" +
+                        "- 메모: " + data.memo;
+
+                    $('.modal-title').text(data.nickname);
+                    $('.modal-body pre').text(bodyText);
+                    $('.modal-footer form').attr('action', `/management/user-accounts/${userId}`);
+                })
+                .catch(error => {
+                    console.error('회원 정보 로딩 실패: ', error);
+                });
+        });
     });
 </script>
 </body>
