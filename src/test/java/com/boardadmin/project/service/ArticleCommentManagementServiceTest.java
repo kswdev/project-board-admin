@@ -103,7 +103,7 @@ class ArticleCommentManagementServiceTest {
             assertThat(result).first()
                     .hasFieldOrPropertyWithValue("id", expectedComment.id())
                     .hasFieldOrPropertyWithValue("content", expectedComment.content())
-                    .hasFieldOrPropertyWithValue("userAccountDto.nickname", expectedComment.userAccount().nickname());
+                    .hasFieldOrPropertyWithValue("userAccount.nickname", expectedComment.userAccount().nickname());
             server.verify();
         }
 
@@ -128,7 +128,7 @@ class ArticleCommentManagementServiceTest {
             assertThat(result)
                     .hasFieldOrPropertyWithValue("id", expectedComment.id())
                     .hasFieldOrPropertyWithValue("content", expectedComment.content())
-                    .hasFieldOrPropertyWithValue("userAccountDto.nickname", expectedComment.userAccount().nickname());
+                    .hasFieldOrPropertyWithValue("userAccount.nickname", expectedComment.userAccount().nickname());
             server.verify();
         }
 

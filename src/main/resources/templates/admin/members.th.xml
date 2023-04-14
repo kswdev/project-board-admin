@@ -8,17 +8,18 @@
     <attr sel="#layout-footer" th:replace="layouts/layout-footer :: footer" />
     <attr sel="#layout-scripts" th:replace="layouts/layout-scripts :: script" />
 
-    <!--<attr sel="#jsgrid-javascript" th:utext='|
+    <attr sel="#jsgrid-javascript" th:utext='|
     $(() => {
       const csrfHeader = "${_csrf.headerName}";
       const csrfToken = "${_csrf.token}";
       $("#jsgrid-admin-members").jsGrid({
         width: "100%",
+
         autoload: true,
         inserting: false,
         editing: false,
         sorting: true,
-        paging: false,
+        paging: true,
         confirmDeleting: true,
         deleteConfirm: "선택하신 어드민 계정을 삭제하시겠습니까?",
         fields: [
@@ -53,5 +54,5 @@
         }
       });
     });
-  |'/>-->
+  |'/>
 </thlogic>
