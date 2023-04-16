@@ -1,6 +1,6 @@
 package com.boardadmin.project.controller;
 
-import com.boardadmin.project.config.SecurityConfig;
+import com.boardadmin.project.config.GlobalControllerConfig;
 import com.boardadmin.project.config.TestSecurityConfig;
 import com.boardadmin.project.dto.UserAccountDto;
 import com.boardadmin.project.service.UserAccountManagementService;
@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -24,7 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DisplayName("컨트롤러 - 회원 관리")
-@Import({TestSecurityConfig.class})
+@Import({TestSecurityConfig.class, GlobalControllerConfig.class})
 @WebMvcTest(UserAccountManagementController.class)
 class UserAccountManagementControllerTest {
 
